@@ -1,0 +1,224 @@
+{
+  "site": {
+    "language": "en",
+    "brandName": "VAEL",
+    "title": "VAEL — Experiences That Bring Destinations to Life",
+    "source": "VAEL — Brand Corporate Deck · 2026"
+  },
+  "theme": {
+    "colors": {
+      "background": "#0b2b20",
+      "lightSection": "#f2ecdd",
+      "accent": "#c6a75e",
+      "textDark": "#1d2a22",
+      "textLight": "#ffffff",
+      "metalLight": "#efe8d8",
+      "metalMid": "#c0b490",
+      "metalDark": "#7f8a78",
+      "roomWalls": {
+        "emerald": "#0e3d2e",
+        "ivory": "#ede4d0",
+        "forestNight": "#143024",
+        "gold": "#c6a75e"
+      }
+    },
+    "fonts": {
+      "serif": "Instrument Serif",
+      "sans": "Inter",
+      "mono": "Source Code Pro"
+    },
+    "logo": "images/vael-logo.png",
+    "frames": "Venetian gold/brown ornate frames on all room, gallery and lightbox images"
+  },
+  "navigation": {
+    "menuLabel": "MENU",
+    "closeLabel": "CLOSE",
+    "links": [
+      {
+        "label": "The Rooms",
+        "target": "hero"
+      },
+      {
+        "label": "The Brand",
+        "target": "consciousness"
+      },
+      {
+        "label": "Live Entertainment",
+        "target": "lighthouse"
+      },
+      {
+        "label": "The Gallery",
+        "target": "waves-gallery"
+      },
+      {
+        "label": "Destinations",
+        "target": "waves-video"
+      },
+      {
+        "label": "Contact",
+        "target": "footer"
+      }
+    ],
+    "sideInfo": [
+      "VAEL — BRAND CORPORATE DECK · 2026",
+      "A BESPOKE GLOBAL ENTERTAINMENT & EXPERIENTIAL BRAND",
+      "SINGAPORE — MALAYSIA — AUSTRALIA",
+      "PURPOSE · ENERGY · LASTING VALUE"
+    ]
+  },
+  "hero": {
+    "mainTitle": "Step Into The [VAEL logo]",
+    "metaLines": [
+      "A Bespoke Global Entertainment & Experiential Brand",
+      "Purposeful Entertainment · Lasting Experiences",
+      "Singapore — Malaysia — Australia"
+    ],
+    "rooms": [
+      {
+        "name": "Live Entertainment",
+        "wall": "emerald",
+        "theme": "dark",
+        "images": {
+          "back": "images/rooms/room1-back.jpg",
+          "left": "images/rooms/room1-left.jpg",
+          "right": "images/rooms/room1-right.jpg"
+        }
+      },
+      {
+        "name": "Creative Storytelling",
+        "wall": "forestNight",
+        "theme": "dark",
+        "images": {
+          "back": "images/rooms/room2-back.jpg",
+          "left": "images/rooms/room2-left.jpg",
+          "right": "images/rooms/room2-right.jpg"
+        }
+      },
+      {
+        "name": "Cultural Programming",
+        "wall": "ivory",
+        "theme": "light",
+        "images": {
+          "back": "images/rooms/room3-back.jpg",
+          "left": "images/rooms/room3-left.jpg",
+          "right": "images/rooms/room3-right.jpg"
+        }
+      },
+      {
+        "name": "Hospitality Experiences",
+        "wall": "gold",
+        "theme": "light",
+        "images": {
+          "back": "images/rooms/room4-back.jpg",
+          "left": "images/rooms/room4-left.jpg",
+          "right": "images/rooms/room4-right.jpg"
+        }
+      }
+    ]
+  },
+  "brand": {
+    "sectionLabel": "02 / THE BRAND",
+    "title": "Every Destination Has a Story",
+    "quote": "Destinations are not backdrops — they are co-authors of it.",
+    "paragraphs": [
+      "VAEL is a bespoke global entertainment and experiential brand dedicated to creating experiences that transform destinations into vibrant places where people gather, connect, and belong.",
+      "Within the Layker & Leesbourne ecosystem, VAEL works closely with KeyStone and partners across hospitality, tourism and lifestyle — independently positioned as a brand, backed by ecosystem strength.",
+      "Through live entertainment, creative storytelling, digital media, cultural programming and hospitality-integrated experiences, VAEL enriches destinations with purpose, energy and lasting value.",
+      "Entertainment made with intention — every show, story and program serving the destination it calls home, creating value long after the lights go down."
+    ]
+  },
+  "liveEntertainment": {
+    "sectionLabel": "LIVE ENTERTAINMENT",
+    "dataPoints": [
+      "CONCERTS · FESTIVALS · STAGE PRODUCTIONS",
+      "SINGAPORE — MALAYSIA — AUSTRALIA",
+      "PURPOSE · ENERGY · LASTING VALUE"
+    ],
+    "description": "Every show built around the story of its destination.",
+    "video": "videos/stage.mp4"
+  },
+  "destinations": {
+    "sectionLabel": "05 / WHERE WE OPERATE",
+    "title": "Three Markets. One Standard.",
+    "ctaText": "STEP INTO THE EXPERIENCE",
+    "video": "videos/waves.mp4"
+  },
+  "gallery": {
+    "sectionLabel": "04 / THE VAEL WORLD",
+    "sectionTitle": "The Gallery",
+    "items": [
+      {
+        "src": "images/gallery/item1.jpg",
+        "caption": "The Stage Is Only Where It Begins"
+      },
+      {
+        "src": "images/gallery/item2.jpg",
+        "caption": "A Reason to Gather"
+      },
+      {
+        "src": "images/gallery/item3.jpg",
+        "caption": "Before the Lights Go Up"
+      },
+      {
+        "src": "images/gallery/item4b.jpg",
+        "caption": "One Voice, One Destination"
+      },
+      {
+        "src": "images/gallery/item5.jpg",
+        "caption": "Heritage in Motion"
+      },
+      {
+        "src": "images/gallery/item6.jpg",
+        "caption": "Lanterns Over the Night Market"
+      },
+      {
+        "src": "images/gallery/item7.jpg",
+        "caption": "Lobbies That Become Stages"
+      },
+      {
+        "src": "images/gallery/item8.jpg",
+        "caption": "The City as Canvas"
+      },
+      {
+        "src": "images/gallery/item9.jpg",
+        "caption": "The Stay Becomes the Experience"
+      }
+    ]
+  },
+  "footer": {
+    "linkColumns": [
+      {
+        "heading": "THE DISCIPLINES",
+        "links": [
+          "Live Entertainment",
+          "Creative Storytelling",
+          "Digital Media",
+          "Cultural Programming",
+          "Hospitality Experiences"
+        ]
+      },
+      {
+        "heading": "PARTNERSHIPS & ENQUIRIES",
+        "links": [
+          "be@thevaelexperience.com",
+          "Hospitality",
+          "Tourism",
+          "Lifestyle"
+        ]
+      }
+    ],
+    "tickerWords": [
+      "GATHER",
+      "CONNECT",
+      "BELONG",
+      "PURPOSE",
+      "ENERGY",
+      "STORY",
+      "STAGE",
+      "CULTURE",
+      "LEGACY",
+      "DESTINY"
+    ],
+    "copyright": "© 2026 VAEL — A Layker & Leesbourne Brand"
+  }
+}

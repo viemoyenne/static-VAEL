@@ -1,0 +1,833 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-void: #0b2b20;
+    --color-alabaster: #f2ecdd;
+    --color-stone: #e6ddc9;
+    --color-amber: #c6a75e;
+    --color-phosphor: #6b5a2e;
+    --color-metal-light: #efe8d8;
+    --color-metal-mid: #c0b490;
+    --color-metal-dark: #7f8a78;
+    --color-main-text: #f0ede4;
+    --color-inverse-text: #ffffff;
+    --page-padding: clamp(1.5rem, 5vw, 4rem);
+    --font-serif: 'Instrument Serif', Georgia, serif;
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Source Code Pro', monospace;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-void);
+    color: var(--color-inverse-text);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+}
+
+/* ============================
+   CSS 3D Room Gallery
+   ============================ */
+
+.archive-container {
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  perspective: 2000px;
+  background: var(--color-void);
+}
+
+.archive-scroller {
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-out;
+}
+
+.room {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  margin: -50vh 0 0 -50vw;
+  pointer-events: none;
+  opacity: 0;
+  transform-style: preserve-3d;
+}
+
+/* ============================================================
+   3D gallery furniture — real extruded geometry in the scene
+   ============================================================ */
+
+/* Ambient wall wash (kept subtle — the lights are now objects) */
+.room__side--back::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 42%, rgba(255, 214, 140, 0.12), transparent 65%),
+    radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.35) 100%);
+  animation: ambient-glow 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.room__side--left::before,
+.room__side--right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 40% at 50% 40%, rgba(255, 214, 140, 0.1), transparent 65%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, transparent 30%, transparent 70%, rgba(0, 0, 0, 0.3) 100%);
+  animation: ambient-glow 9s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+@keyframes ambient-glow {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+@keyframes sconce-flicker {
+  0%, 100% { opacity: 0.75; }
+  42% { opacity: 1; }
+  58% { opacity: 0.85; }
+}
+
+/* ---------- 3D wainscot rail: brass bar with a visible top face ---------- */
+.rail3d {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 11%;
+  height: 3%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.rail3d__face {
+  position: absolute;
+  inset: 0;
+}
+
+.rail3d__face--front {
+  background: linear-gradient(180deg, #d8bc77 0%, #8a6a2e 55%, #4a3716 100%);
+  transform: translateZ(26px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.5);
+}
+
+.rail3d__face--top {
+  height: 26px;
+  top: -26px;
+  background: linear-gradient(180deg, #efdb9d, #b08d45);
+  transform-origin: 50% 100%;
+  transform: rotateX(90deg);
+}
+
+/* ---------- 3D wall sconces: shade, stem and real light cone ---------- */
+.sconce3d {
+  position: absolute;
+  top: 20%;
+  width: 34px;
+  height: 110px;
+  transform-style: preserve-3d;
+  transform: translateZ(30px);
+  pointer-events: none;
+}
+
+.sconce3d--a { left: 17%; }
+.sconce3d--b { right: 17%; }
+
+.sconce3d__stem {
+  position: absolute;
+  left: 50%;
+  top: 34px;
+  width: 7px;
+  height: 76px;
+  margin-left: -3.5px;
+  background: linear-gradient(90deg, #4a3716, #c6a75e 45%, #6b4f23);
+  border-radius: 4px;
+}
+
+.sconce3d__shade {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 34px;
+  height: 40px;
+  margin-left: -17px;
+  background: radial-gradient(ellipse 50% 90% at 50% 90%, #ffe2a0 0%, #c6a75e 45%, #6b4f23 100%);
+  clip-path: polygon(28% 0, 72% 0, 100% 100%, 0 100%);
+  box-shadow: 0 0 24px 6px rgba(255, 205, 120, 0.5);
+  animation: sconce-flicker 6s ease-in-out infinite;
+}
+
+.sconce3d__shade::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 130px;
+  background: radial-gradient(ellipse 50% 40% at 50% 0%, rgba(255, 205, 120, 0.35), transparent 70%);
+}
+
+/* ---------- 3D track spotlights over the back-wall centerpiece ---------- */
+.track3d {
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  width: 34%;
+  height: 90px;
+  margin-left: -17%;
+  transform-style: preserve-3d;
+  transform: translateZ(60px);
+  pointer-events: none;
+}
+
+.track3d__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 8px;
+  background: linear-gradient(180deg, #3a2a10, #14100a);
+  border-radius: 3px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.track3d__head {
+  position: absolute;
+  top: 8px;
+  width: 22px;
+  height: 26px;
+  background: linear-gradient(180deg, #6b4f23, #2a1f0e);
+  border-radius: 4px 4px 8px 8px;
+  transform-origin: 50% 0;
+}
+
+.track3d__head--a { left: 12%; transform: rotateZ(14deg) rotateX(12deg); }
+.track3d__head--b { right: 12%; transform: rotateZ(-14deg) rotateX(12deg); }
+
+.track3d__head i {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 200px;
+  background: radial-gradient(ellipse 50% 45% at 50% 0%, rgba(255, 214, 140, 0.4), transparent 68%);
+  animation: sconce-flicker 7s ease-in-out infinite;
+}
+
+/* ---------- 3D skylight: recessed coffered ceiling panel ---------- */
+.skylight3d {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: 40%;
+  height: 22%;
+  transform: translateX(-50%);
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.skylight3d__pane {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(255, 232, 175, 0.9), rgba(230, 200, 130, 0.45) 70%, rgba(140, 110, 55, 0.25) 100%);
+  transform: translateZ(46px);
+  box-shadow: 0 0 90px 30px rgba(255, 220, 150, 0.35);
+  animation: skylight-breathe 11s ease-in-out infinite;
+}
+
+.skylight3d__beam {
+  position: absolute;
+  background: linear-gradient(90deg, #241a0c, #4a3716, #241a0c);
+}
+
+.skylight3d__beam--h {
+  left: -4%;
+  right: -4%;
+  top: 0;
+  height: 12%;
+  transform: translateZ(30px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.55);
+}
+
+.skylight3d__beam--v {
+  top: -6%;
+  bottom: -6%;
+  left: 0;
+  width: 6%;
+  transform: translateZ(30px);
+}
+
+/* ---------- 3D gallery bench on the floor ---------- */
+.bench3d {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 380px;
+  height: 60px;
+  margin-left: -190px;
+  transform-style: preserve-3d;
+  transform: translate3d(0, 44vh, -2400px);
+  pointer-events: none;
+}
+
+.bench3d__top {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #3d2f1a, #241a0c);
+  border-top: 3px solid #8a6a2e;
+  transform: translateZ(26px);
+  box-shadow: 0 24px 40px rgba(0, 0, 0, 0.55);
+}
+
+.bench3d__front {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 52px;
+  background: linear-gradient(180deg, #2a1f0e, #14100a);
+  transform-origin: 50% 0;
+  transform: rotateX(-90deg) translateZ(26px);
+}
+
+.bench3d__leg {
+  position: absolute;
+  top: 100%;
+  width: 14px;
+  height: 52px;
+  background: linear-gradient(90deg, #1a1309, #3a2a10, #1a1309);
+  transform: translateZ(20px);
+}
+
+.bench3d__leg--a { left: 8%; }
+.bench3d__leg--b { right: 8%; }
+
+/* ---------- 3D artwork: frame extruded off the wall with visible depth ---------- */
+.art3d {
+  display: inline-block;
+  transform-style: preserve-3d;
+  transform: translateZ(34px);
+}
+
+.art3d img {
+  display: block;
+}
+
+.room__side img {
+  box-shadow:
+    inset 0 0 0 2px #3a2a10,
+    inset 0 0 0 4px #c6a75e,
+    inset 0 0 0 6px #8a6a2e,
+    inset 0 0 18px 8px rgba(0, 0, 0, 0.55),
+    0 0 0 3px #c6a75e,
+    0 0 0 5px #4a3716,
+    /* frame depth: the painting casts a real shadow on the wall */
+    14px 22px 34px rgba(0, 0, 0, 0.6),
+    0 34px 60px rgba(0, 0, 0, 0.4),
+    /* spotlight pooling above the frame */
+    0 -28px 50px -18px rgba(255, 205, 120, 0.28);
+}
+
+.room--current {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.room__side {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  transform-style: preserve-3d;
+}
+
+.room__side--back {
+  width: 100vw;
+  height: 100vh;
+  transform: translate3d(0, 0, -4000px) rotate3d(1, 0, 0, 0.1deg);
+  justify-content: center;
+}
+
+.room__side--right {
+  width: 4000px;
+  height: 100vh;
+  right: 0;
+  justify-content: flex-end;
+  transform: rotate3d(0, 1, 0, -90.03deg);
+  transform-origin: 100% 50%;
+}
+
+.room__side--left {
+  width: 4000px;
+  height: 100vh;
+  left: 0;
+  justify-content: flex-start;
+  transform: rotate3d(0, 1, 0, 90deg);
+  transform-origin: 0 50%;
+}
+
+.room__side--top {
+  width: 100vw;
+  height: 4000px;
+  bottom: 100%;
+  transform: rotate3d(1, 0, 0, -90deg) translate3d(0, 4000px, 0);
+  transform-origin: 50% 100%;
+  /* gallery skylight: a soft luminous coffers fading into shadow */
+  background:
+    radial-gradient(ellipse 34% 18% at 50% 46%, rgba(255, 226, 160, 0.35), rgba(255, 226, 160, 0.08) 55%, transparent 75%),
+    radial-gradient(ellipse 55% 30% at 50% 50%, rgba(255, 255, 255, 0.07), transparent 70%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.22) 100%) !important;
+  animation: skylight-breathe 11s ease-in-out infinite;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.2);
+}
+
+@keyframes skylight-breathe {
+  0%, 100% { filter: brightness(0.92); }
+  50% { filter: brightness(1.08); }
+}
+
+.room__side--bottom {
+  width: 100vw;
+  height: 4000px;
+  top: 100%;
+  transform: rotate3d(1, 0, 0, 90deg) translate3d(0, -4000px, 0);
+  transform-origin: 50% 0%;
+  /* dark parquet gallery floor with light pooling near the walls */
+  background:
+    radial-gradient(ellipse 42% 14% at 50% 6%, rgba(255, 214, 140, 0.16), transparent 70%),
+    radial-gradient(ellipse 60% 30% at 50% 40%, rgba(255, 205, 120, 0.05), transparent 70%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(198, 167, 94, 0.05) 0px,
+      rgba(198, 167, 94, 0.05) 2px,
+      transparent 2px,
+      transparent 120px
+    ),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.45)) !important;
+}
+
+/* ============================================================
+   Venetian frames — ornate gold & brown picture frames
+   ============================================================ */
+
+.room__side img,
+.venetian-frame {
+  border: 10px solid #6b4f23;
+  box-shadow:
+    /* inner gold bead */
+    inset 0 0 0 2px #3a2a10,
+    inset 0 0 0 4px #c6a75e,
+    inset 0 0 0 6px #8a6a2e,
+    inset 0 0 18px 8px rgba(0, 0, 0, 0.55),
+    /* outer gilded lip */
+    0 0 0 3px #c6a75e,
+    0 0 0 5px #4a3716,
+    /* carved-wood depth + drop shadow */
+    0 6px 18px rgba(0, 0, 0, 0.55),
+    0 18px 42px rgba(0, 0, 0, 0.45);
+  background: #2a1f0e;
+  padding: 0;
+}
+
+.room__side img {
+  max-width: 40%;
+  max-height: 60%;
+  transform: translate3d(0, 0, 10px);
+  backface-visibility: hidden;
+  object-fit: cover;
+}
+
+.room__side--back .art3d {
+  max-width: 40%;
+  max-height: 60%;
+  margin: 0 5%;
+}
+
+.room__side--back .art3d img {
+  max-width: 100%;
+  max-height: 60vh;
+}
+
+.room__side--left .art3d {
+  max-width: 40%;
+  max-height: 60%;
+  margin: 0 0 0 25%;
+}
+
+.room__side--left .art3d img {
+  max-width: 100%;
+  max-height: 60vh;
+}
+
+.room__side--right .art3d {
+  max-width: 40%;
+  max-height: 60%;
+  margin: 0 25% 0 0;
+}
+
+.room__side--right .art3d img {
+  max-width: 100%;
+  max-height: 60vh;
+}
+
+/* Wall edge lines — visible seams between walls */
+.room__side--back {
+  border-left: 2px solid rgba(0, 0, 0, 0.4);
+  border-right: 2px solid rgba(0, 0, 0, 0.4);
+  border-top: 2px solid rgba(0, 0, 0, 0.35);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+.room__side--left {
+  border-right: 2px solid rgba(0, 0, 0, 0.4);
+  border-top: 2px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+}
+.room__side--right {
+  border-left: 2px solid rgba(0, 0, 0, 0.4);
+  border-top: 2px solid rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.25);
+}
+
+/* Room wall colors */
+/* AR-inspired dark palette — all halls in deep tones */
+.room--monk .room__side { background: #101f1a; }
+.room--lighthouse .room__side { background: #0d1b22; }
+.room--orlando .room__side { background: #141a12; }
+.room--waves .room__side { background: #0b211a; }
+
+/* Archive content overlay */
+.archive-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 8vh;
+}
+
+.archive-content[data-theme="light"] .archive-title,
+.archive-content[data-theme="light"] .archive-subtitle,
+.archive-content[data-theme="light"] .archive-meta {
+  color: #f0ede4;
+}
+
+.archive-content[data-theme="light"] .archive-subtitle {
+  opacity: 0.95;
+}
+
+.archive-content[data-theme="light"] .archive-meta {
+  opacity: 0.85;
+}
+
+.archive-content[data-theme="dark"] .archive-title,
+.archive-content[data-theme="dark"] .archive-subtitle,
+.archive-content[data-theme="dark"] .archive-meta {
+  color: #f0ede4;
+}
+
+.archive-title {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-align: center;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  transition: color 0.3s ease;
+}
+
+/* Brand title: kicker line + VAEL logo */
+.archive-title-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+
+.archive-title-kicker {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4.5vw, 3.75rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: #f0ede4;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  transition: color 0.3s ease;
+}
+
+.archive-title-logo {
+  height: clamp(4rem, 9vw, 8rem);
+  width: auto;
+  filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.35));
+}
+
+.archive-content[data-theme="light"] .archive-title-kicker {
+  color: #f0ede4;
+  text-shadow: none;
+}
+
+.archive-content[data-theme="dark"] .archive-title-kicker {
+  color: #f0ede4;
+}
+
+.archive-subtitle {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #f0ede4;
+  opacity: 0.95;
+  margin-top: 0.75rem;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.2s ease, color 0.3s ease;
+}
+
+.archive-meta {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f0ede4;
+  opacity: 0.8;
+  margin-top: 1.5rem;
+  text-align: center;
+  line-height: 2.2;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
+  transition: color 0.3s ease;
+}
+
+/* ============================================================
+   AR HUD layer — viewport brackets, scanline, readouts
+   ============================================================ */
+
+.ar-hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* faint AR grid film over the whole view */
+.ar-hud::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(240, 237, 228, 0.022) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(90deg, rgba(240, 237, 228, 0.022) 0 1px, transparent 1px 64px);
+}
+
+/* camera-style viewport corner brackets */
+.ar-hud__corner {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border: 1.5px solid rgba(240, 237, 228, 0.55);
+  filter: drop-shadow(0 0 6px rgba(198, 167, 94, 0.35));
+}
+
+.ar-hud__corner--tl { top: 5.5rem; left: 2rem; border-right: none; border-bottom: none; }
+.ar-hud__corner--tr { top: 5.5rem; right: 2rem; border-left: none; border-bottom: none; }
+.ar-hud__corner--bl { bottom: 2rem; left: 2rem; border-right: none; border-top: none; }
+.ar-hud__corner--br { bottom: 2rem; right: 2rem; border-left: none; border-top: none; }
+
+/* slow scanning sweep travelling down the view */
+.ar-hud__scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -12%;
+  height: 12%;
+  background: linear-gradient(180deg, transparent, rgba(198, 167, 94, 0.07) 70%, rgba(240, 237, 228, 0.12) 99%, transparent);
+  animation: ar-scan 9s linear infinite;
+}
+
+@keyframes ar-scan {
+  0% { top: -12%; }
+  100% { top: 112%; }
+}
+
+/* mono HUD readouts */
+.ar-hud__readout {
+  position: absolute;
+  bottom: 2.6rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: rgba(240, 237, 228, 0.6);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+.ar-hud__readout--left { left: 5rem; }
+.ar-hud__readout--right { right: 5rem; }
+
+/* AR target brackets + scan pulse around each artwork */
+.art3d::before {
+  content: '';
+  position: absolute;
+  inset: -16px;
+  border: 1px solid rgba(240, 237, 228, 0.3);
+  clip-path: polygon(
+    0 0, 22px 0, 22px 2px, 2px 2px, 2px 22px, 0 22px,
+    0 0,
+    100% 0, calc(100% - 22px) 0, calc(100% - 22px) 2px, calc(100% - 2px) 2px, calc(100% - 2px) 22px, 100% 22px,
+    100% 0,
+    0 100%, 22px 100%, 22px calc(100% - 2px), 2px calc(100% - 2px), 2px calc(100% - 22px), 0 calc(100% - 22px),
+    0 100%,
+    100% 100%, calc(100% - 22px) 100%, calc(100% - 22px) calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) calc(100% - 22px), 100% calc(100% - 22px),
+    100% 100%
+  );
+  animation: ar-target 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.art3d::after {
+  content: '';
+  position: absolute;
+  left: -16px;
+  right: -16px;
+  top: -16px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(198, 167, 94, 0.65), transparent);
+  animation: ar-artscan 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ar-target {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes ar-artscan {
+  0% { top: -16px; opacity: 0; }
+  12% { opacity: 0.9; }
+  88% { opacity: 0.9; }
+  100% { top: calc(100% + 15px); opacity: 0; }
+}
+
+/* Navigation arrows */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 10;
+  pointer-events: auto;
+  color: #f0ede4;
+  opacity: 0.6;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.nav-arrow:hover {
+  opacity: 1;
+}
+
+.nav-arrow--left {
+  left: 2rem;
+}
+
+.nav-arrow--left:hover {
+  transform: translateY(-50%) translateX(-4px);
+}
+
+.nav-arrow--right {
+  right: 2rem;
+}
+
+.nav-arrow--right:hover {
+  transform: translateY(-50%) translateX(4px);
+}
+
+/* ============================
+   Liquid Glass Panel
+   ============================ */
+
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  backdrop-filter: blur(2px) saturate(140%);
+  -webkit-backdrop-filter: blur(2px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  mask: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+  pointer-events: none;
+}
+
+/* ============================
+   Section Label
+   ============================ */
+
+.section-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-metal-dark);
+  line-height: 1;
+}
+
+/* ============================
+   Ticker Line
+   ============================ */
+
+.ticker-line {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--color-inverse-text);
+  letter-spacing: 0.08em;
+}
+
+/* ============================
+   Selection
+   ============================ */
+
+::selection {
+  background: var(--color-amber);
+  color: var(--color-inverse-text);
+}

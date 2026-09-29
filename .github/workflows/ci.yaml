@@ -29,7 +29,9 @@ jobs:
           node-version: 24
 
       - name: Install dependencies
-        run: npm install --registry=https://npmjs.org --legacy-peer-deps
+        env:
+          npm_config_registry: https://npmjs.org
+        run: npm install --legacy-peer-deps
 
       - name: Build
         run: npm run build
